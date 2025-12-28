@@ -28,18 +28,24 @@ const script = `print("hello world")`; // Put your script here.
  ```javascript
 const net = require('net');
 const script = `print("hello world")`; // Put your script here.
+
+const ports = [
+  5553, 5554, 5555, 5556, 5557, 5558, 5559, 5560, 5561, 5562, 5563
+];
+
 function executeScript(script, port) {
-    const client = new net.Socket();
-    client.connect(port, '127.0.0.1', () => {
-        const header = Buffer.alloc(16);
-        header.writeUInt8(0, 0);
-        header.writeUInt32LE(Buffer.byteLength(script) + 1, 8);
-        client.write(Buffer.concat([header, Buffer.from(script), Buffer.from([0])]));
-        client.end();
-        console.log('F12 in roblox to see activity of script.');
-    }).setTimeout(3000);
+  const client = new net.Socket();
+  client.connect(port, '127.0.0.1', () => {
+    const header = Buffer.alloc(16);
+    header.writeUInt8(0, 0);
+    header.writeUInt32LE(Buffer.byteLength(script) + 1, 8);
+    client.write(Buffer.concat([header, Buffer.from(script), Buffer.from([0])]));
+    client.end();
+    console.log(`Sent script to port ${port}. F12 in roblox to see activity of script.`);
+  }).setTimeout(3000);
 }
-executeScript(script, 5553); // port is on 5553, default macsploit port.
+
+ports.forEach(port => executeScript(script, port));
  ```
 
 3. **Run the Script**: Execute your JavaScript file using Node.js.
